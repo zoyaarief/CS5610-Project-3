@@ -1,0 +1,16 @@
+[
+  {
+    "id": "a4fe664e-f4f3-47a7-b19c-eda5a2b6d0d4",
+    "email": "theresa.p3@example.com",
+    "passwordHash": "d373a95a48b22d370fde90df7eb75777:2ddb2e934e115977ccef251f5e5cdf762453410285fb70f97ded1dec2cc17fc51666e28ae92fff34aea3f3a109b2b0de9c4e228686e118648dfb351d56af32e7",
+    "name": "Theresa Test",
+    "avatarUrl": ""
+  },
+  {
+    "id": "f2713bad-9954-4f47-ae4c-89c740414d89",
+    "email": "O.Jane@noemail.com",
+    "passwordHash": "b265cc7954d41618e761f2a83f9f6013:305a0fe584fef570135d53d0032ff283baa6a004622fc3991f7106f9dc6dc7d00364c0593fbdcc404f1767090758301e3278211e79fe0ba19238fc0de9ffe1cb",
+    "name": "Jane",
+    "avatarUrl": ""
+  }
+]
