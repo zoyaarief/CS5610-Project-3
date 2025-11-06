@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch backend.js"
+    "start": "node --watch backend.js",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -20,20 +21,29 @@
   },
   "homepage": "https://github.com/salmeida1993/CS5610-Project-3#readme",
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.13.1",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mongodb": "6.20",
     "nodemon": "^3.1.10"
+=======
+    "express": "^5.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.5"
+>>>>>>> 875aaf8913592629535f747a2ec773a7002f8a5c
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
+    "@vitejs/plugin-react": "^5.1.0",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.0.1",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.5.0",
     "jest": "^30.2.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.3.3",
+    "vite": "^7.1.12"
   }
 }

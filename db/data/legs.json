@@ -1,0 +1,26 @@
+{
+  "_id": "ObjectId",
+  "tripId": "ObjectId",
+  "userId": "ObjectId",
+
+  "startLocation": {
+    "city": "Los Angeles",
+    "state": "California",
+    "stateCode": "CA",
+    "lat": 34.0522,
+    "long": -118.2437,
+    "formatted": "Los Angeles, California, USA"
+  },
+
+  "endLocation": {
+    "city": "Las Vegas",
+    "state": "Nevada",
+    "stateCode": "NV",
+    "lat": 36.1699,
+    "long": -115.1398,
+    "formatted": "Las Vegas, Nevada, USA"
+  },
+
+  "transportationMode": "Car",
+  "dateOfLeg": "2025-06-15"
+}
