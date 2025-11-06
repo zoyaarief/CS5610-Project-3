@@ -1,22 +1,22 @@
-export const AUTH_API = import.meta.env.VITE_API_BASE || "http://localhost:4000/api";
-export const TRIP_API = import.meta.env.VITE_TRIP_API || "http://localhost:3000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || ""; // empty in dev to use proxy
 
-/**
- * Generic API helper for either AUTH_API or TRIP_API endpoints.
- * Example:
- *   api("/auth/login", { method:"POST", data:{email, password} })
- *   api("/trips", { base: TRIP_API })
- */
-export async function api(path, { method = "GET", data, base = AUTH_API } = {}) {
-  const res = await fetch(`${base}${path}`, {
+export async function api(path, { method = "GET", data } = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
     method,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: data ? JSON.stringify(data) : undefined
+    body: data ? JSON.stringify(data) : undefined,
   });
 
-  const text = await res.text();
-  const json = text ? JSON.parse(text) : {};
-  if (!res.ok) throw new Error(json.error || "Request failed");
-  return json;
+  if (!res.ok) {
+    const err = new Error(`HTTP ${res.status}`);
+    err.status = res.status;
+    try {
+      const msg = await res.json();
+      err.message = msg.message || err.message;
+    } catch {}
+    throw err;
+  }
+
+  return res.json();
 }

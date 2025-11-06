@@ -1,18 +1,21 @@
 {
   "name": "auth-server",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "NODE_ENV=production node server.js"
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mongodb": "^6.20.0"
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }

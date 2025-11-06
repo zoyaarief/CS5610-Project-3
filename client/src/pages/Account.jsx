@@ -1,15 +1,19 @@
 import React from "react";
-import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-export default function Account(){
+import { useAuth } from "../context/AuthContext.jsx";
+
+export default function Account() {
   const { user } = useAuth();
-  return (<div className="card">
-    <h2>My Account</h2>
-    <img src={user.avatarUrl || "https://via.placeholder.com/96"} alt="avatar" width={96} height={96} style={{borderRadius:12}}/>
-    <div><strong>Name:</strong> {user.name}</div>
-    <div><strong>Email:</strong> {user.email}</div>
-    <div style={{display:"flex",gap:8,marginTop:8}}>
-      <Link to="/account/edit">Edit</Link>
-      <Link to="/account/delete" style={{color:"var(--danger)"}}>Delete account</Link>
-    </div></div>);
+  if (!user) return <p className="card" style={{ margin: "2rem" }}>You are not signed in.</p>;
+  return (
+    <div className="card" style={{ maxWidth: 640, margin: "2rem auto" }}>
+      <h2>My Account</h2>
+      <p><strong>Name:</strong> {user.name}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <div style={{ display: "flex", gap: 8 }}>
+        <Link to="/account/edit" className="button">Edit</Link>
+        <Link to="/account/delete" className="button danger">Delete</Link>
+      </div>
+    </div>
+  );
 }
