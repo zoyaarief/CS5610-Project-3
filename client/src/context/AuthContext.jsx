@@ -21,19 +21,27 @@ export function AuthProvider({ children }) {
         if (!cancel) setLoading(false);
       }
     })();
-    return () => { cancel = true; };
+    return () => {
+      cancel = true;
+    };
   }, []);
 
   const login = async (email, password) => {
     setErr("");
-    const r = await api("/auth/login", { method: "POST", data: { email, password } });
+    const r = await api("/auth/login", {
+      method: "POST",
+      data: { email, password },
+    });
     setUser(r.user);
     return r.user;
   };
 
   const register = async (name, email, password) => {
     setErr("");
-    const r = await api("/auth/register", { method: "POST", data: { name, email, password } });
+    const r = await api("/auth/register", {
+      method: "POST",
+      data: { name, email, password },
+    });
     setUser(r.user);
     return r.user;
   };
@@ -44,17 +52,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
- const updateMe = async (patch) => {
-  try {
-    const r = await api("/users/me", { method: "PATCH", data: patch });
-    setUser(r.user);       // <- immediately update context
-    return r.user;
-  } catch (e) {
-    if (e.status === 401) setUser(null); // stale cookie → logout locally
-    throw e;
-  }
-};
-
+  const updateMe = async (patch) => {
+    try {
+      const r = await api("/users/me", { method: "PATCH", data: patch });
+      setUser(r.user); // <- immediately update context
+      return r.user;
+    } catch (e) {
+      if (e.status === 401) setUser(null); // stale cookie → logout locally
+      throw e;
+    }
+  };
 
   const deleteMe = async () => {
     setErr("");
@@ -63,7 +70,19 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthCtx.Provider value={{ user, loading, err, setErr, login, register, logout, updateMe, deleteMe }}>
+    <AuthCtx.Provider
+      value={{
+        user,
+        loading,
+        err,
+        setErr,
+        login,
+        register,
+        logout,
+        updateMe,
+        deleteMe,
+      }}
+    >
       {children}
     </AuthCtx.Provider>
   );

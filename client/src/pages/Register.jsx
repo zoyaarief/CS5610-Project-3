@@ -27,16 +27,36 @@ export default function Register() {
       <h2>Create account</h2>
       {err && <p className="error">{err}</p>}
       <form onSubmit={onSubmit}>
-        <label>Name
-          <input value={form.name} onChange={(e)=>setForm({...form, name:e.target.value})} required />
+        <label>
+          Name
+          <input
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
+          />
         </label>
-        <label>Email
-          <input type="email" value={form.email} onChange={(e)=>setForm({...form, email:e.target.value})} required />
+        <label>
+          Email
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
         </label>
-        <label>Password
-          <input type="password" value={form.password} minLength={6} onChange={(e)=>setForm({...form, password:e.target.value})} required />
+        <label>
+          Password
+          <input
+            type="password"
+            value={form.password}
+            minLength={6}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
         </label>
-        <button disabled={busy} type="submit">{busy ? "Creating…" : "Create account"}</button>
+        <button disabled={busy} type="submit">
+          {busy ? "Creating…" : "Create account"}
+        </button>
       </form>
     </div>
   );

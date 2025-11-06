@@ -27,15 +27,31 @@ export default function Login() {
       <h2>Log in</h2>
       {err && <p className="error">{err}</p>}
       <form onSubmit={onSubmit}>
-        <label>Email
-          <input type="email" value={form.email} onChange={(e)=>setForm({...form, email:e.target.value})} required />
+        <label>
+          Email
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
         </label>
-        <label>Password
-          <input type="password" value={form.password} onChange={(e)=>setForm({...form, password:e.target.value})} required />
+        <label>
+          Password
+          <input
+            type="password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
         </label>
-        <button disabled={busy} type="submit">{busy ? "Signing in…" : "Log in"}</button>
+        <button disabled={busy} type="submit">
+          {busy ? "Signing in…" : "Log in"}
+        </button>
       </form>
-      <p className="help">New here? <Link to="/register">Create an account</Link></p>
+      <p className="help">
+        New here? <Link to="/register">Create an account</Link>
+      </p>
     </div>
   );
 }

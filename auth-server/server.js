@@ -46,9 +46,8 @@ const cookieOpts = {
   sameSite: "lax",
   secure: NODE_ENV === "production",
   path: "/",
-  maxAge: 1000 * 60 * 60 * 24 * 7
+  maxAge: 1000 * 60 * 60 * 24 * 7,
 };
-
 
 function safeUser(doc) {
   if (!doc) return null;
@@ -67,7 +66,9 @@ function authRequired(req, res, next) {
     return next();
   } catch {
     res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
-    return res.status(401).json({ message: "Session expired. Please sign in again." });
+    return res
+      .status(401)
+      .json({ message: "Session expired. Please sign in again." });
   }
 }
 
@@ -82,7 +83,8 @@ app.post("/auth/register", async (req, res) => {
 
   const emailNorm = String(email).trim().toLowerCase();
   const exists = await users.findOne({ email: emailNorm });
-  if (exists) return res.status(409).json({ message: "Email already registered" });
+  if (exists)
+    return res.status(409).json({ message: "Email already registered" });
 
   const pass = await bcrypt.hash(password, 10);
   const doc = {
@@ -94,7 +96,11 @@ app.post("/auth/register", async (req, res) => {
   };
 
   const r = await users.insertOne(doc);
-  const user = safeUser({ _id: r.insertedId, name: doc.name, email: doc.email });
+  const user = safeUser({
+    _id: r.insertedId,
+    name: doc.name,
+    email: doc.email,
+  });
   const token = sign({ uid: user._id, email: user.email });
   res.cookie("token", token, cookieOpts);
   return res.status(201).json({ user });
@@ -102,7 +108,8 @@ app.post("/auth/register", async (req, res) => {
 
 app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body || {};
-  if (!email || !password) return res.status(400).json({ message: "Invalid input" });
+  if (!email || !password)
+    return res.status(400).json({ message: "Invalid input" });
 
   const emailNorm = String(email).trim().toLowerCase();
   const u = await users.findOne({ email: emailNorm });
@@ -125,12 +132,17 @@ app.post("/auth/logout", (_req, res) => {
 app.get("/users/me", authRequired, async (req, res) => {
   const uid = req.auth.uid;
   try {
-    const u = await users.findOne({ _id: new ObjectId(uid) }, { projection: { pass: 0 } });
+    const u = await users.findOne(
+      { _id: new ObjectId(uid) },
+      { projection: { pass: 0 } }
+    );
     if (!u) throw new Error("No user found");
     return res.json({ user: safeUser(u) });
   } catch {
     res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
-    return res.status(401).json({ message: "Session expired. Please sign in again." });
+    return res
+      .status(401)
+      .json({ message: "Session expired. Please sign in again." });
   }
 });
 
@@ -143,7 +155,9 @@ app.patch("/users/me", authRequired, async (req, res) => {
   if (!current) {
     // Keep cookie; ask client to re-auth without auto-logout thrash
     console.warn("[PATCH /users/me] No current user for uid:", uid);
-    return res.status(401).json({ message: "Session expired. Please sign in again." });
+    return res
+      .status(401)
+      .json({ message: "Session expired. Please sign in again." });
   }
 
   // Build minimal patch
@@ -155,8 +169,12 @@ app.patch("/users/me", authRequired, async (req, res) => {
   if (typeof req.body?.email === "string") {
     const newEmail = req.body.email.trim().toLowerCase();
     if (newEmail && newEmail !== current.email) {
-      const clash = await users.findOne({ email: newEmail, _id: { $ne: current._id } });
-      if (clash) return res.status(409).json({ message: "Email already in use" });
+      const clash = await users.findOne({
+        email: newEmail,
+        _id: { $ne: current._id },
+      });
+      if (clash)
+        return res.status(409).json({ message: "Email already in use" });
       patch.email = newEmail;
     }
   }
@@ -179,19 +197,23 @@ app.patch("/users/me", authRequired, async (req, res) => {
   if (!updated) {
     // Edge case: update matched nothing. Do NOT clear cookie; just ask to re-auth.
     console.warn("[PATCH /users/me] Update returned null for uid:", uid);
-    return res.status(401).json({ message: "Session expired. Please sign in again." });
+    return res
+      .status(401)
+      .json({ message: "Session expired. Please sign in again." });
   }
 
   // If email changed, rotate cookie BEFORE sending the body
   if (patch.email) {
     const token = sign({ uid, email: updated.email });
     res.cookie("token", token, cookieOpts);
-    console.log("[PATCH /users/me] Rotated cookie for email change:", updated.email);
+    console.log(
+      "[PATCH /users/me] Rotated cookie for email change:",
+      updated.email
+    );
   }
 
   return res.json({ user: safeUser(updated) });
 });
-
 
 app.delete("/users/me", authRequired, async (req, res) => {
   const uid = req.auth.uid;
@@ -206,7 +228,9 @@ async function boot() {
   db = client.db(MONGO_DB);
   users = db.collection("users");
   await users.createIndex({ email: 1 }, { unique: true });
-  app.listen(AUTH_PORT, () => console.log(`[auth] http://localhost:${AUTH_PORT}`));
+  app.listen(AUTH_PORT, () =>
+    console.log(`[auth] http://localhost:${AUTH_PORT}`)
+  );
 }
 boot().catch((e) => {
   console.error(e);

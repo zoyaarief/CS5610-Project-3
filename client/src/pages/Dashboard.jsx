@@ -1,5 +1,5 @@
 import React from "react";
-export default function Dashboard(){
+export default function Dashboard() {
   const mockStats = { statesVisited: 5, totalCost: 3400 };
   return (
     <div className="card">

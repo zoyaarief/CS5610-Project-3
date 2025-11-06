@@ -1,18 +1,18 @@
 {
-    "_id": "ObjectId",
-    "userId": "ObjectId",
-    "title": "Summer 2025 Road Trip",
-    "description": "A cross-country road trip visiting national parks and major cities.",
-    "startDate": "2025-06-15",
-    "endDate": "2025-07-15",
-    "statesVisited": ["CA", "NV", "AZ", "TX", "IL", "NY"],
-    "expenses": {
-        "transportation": 3000,
-        "food": 1500,
-        "lodging": 2000,
-        "extra": 500
-    },
-    "notes": "Avoid the chili in New Mexico, it's too spicy!",
-    "createdAt": "2024-06-01T12:00:00Z",
-    "updatedAt": "2024-06-01T12:00:00Z"
+  "_id": "ObjectId",
+  "userId": "ObjectId",
+  "title": "Summer 2025 Road Trip",
+  "description": "A cross-country road trip visiting national parks and major cities.",
+  "startDate": "2025-06-15",
+  "endDate": "2025-07-15",
+  "statesVisited": ["CA", "NV", "AZ", "TX", "IL", "NY"],
+  "expenses": {
+    "transportation": 3000,
+    "food": 1500,
+    "lodging": 2000,
+    "extra": 500
+  },
+  "notes": "Avoid the chili in New Mexico, it's too spicy!",
+  "createdAt": "2024-06-01T12:00:00Z",
+  "updatedAt": "2024-06-01T12:00:00Z"
 }

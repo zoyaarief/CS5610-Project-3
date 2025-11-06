@@ -66,8 +66,16 @@ export default function AccountEdit() {
     <div className="card" style={{ maxWidth: 520, margin: "2rem auto" }}>
       <h2>Edit Account</h2>
 
-      {info && <p className="info" style={{ color: "green" }}>{info}</p>}
-      {err && <p className="error" style={{ color: "red" }}>{err}</p>}
+      {info && (
+        <p className="info" style={{ color: "green" }}>
+          {info}
+        </p>
+      )}
+      {err && (
+        <p className="error" style={{ color: "red" }}>
+          {err}
+        </p>
+      )}
 
       <form onSubmit={onSubmit}>
         <label>

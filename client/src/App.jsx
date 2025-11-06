@@ -22,7 +22,11 @@ export default function App() {
           {!user && <Link to="/login">Login</Link>}
           {!user && <Link to="/register">Register</Link>}
           {user && <Link to="/account">Account</Link>}
-          {user && <button onClick={logout} className="linklike">Logout</button>}
+          {user && (
+            <button onClick={logout} className="linklike">
+              Logout
+            </button>
+          )}
         </nav>
       </header>
 
@@ -31,9 +35,30 @@ export default function App() {
           <Route path="/" element={<p>Welcome. Use the nav to explore.</p>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-          <Route path="/account/edit" element={<ProtectedRoute><AccountEdit /></ProtectedRoute>} />
-          <Route path="/account/delete" element={<ProtectedRoute><AccountDelete /></ProtectedRoute>} />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account/edit"
+            element={
+              <ProtectedRoute>
+                <AccountEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account/delete"
+            element={
+              <ProtectedRoute>
+                <AccountDelete />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/states" element={<StateIndex />} />
           <Route path="/states/:code" element={<StateDetail />} />
         </Routes>
