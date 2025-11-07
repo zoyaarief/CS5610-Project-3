@@ -108,6 +108,7 @@ input {
   padding: var(--pad);
   background: var(--card);
   border-radius: var(--radius);
+  color: var(--text);
 }
 
 .help {
