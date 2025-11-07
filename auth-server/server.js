@@ -1,4 +1,3 @@
-// auth-server/server.js
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -24,7 +23,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Allow /api/* prefix calls
+// Allow client to call /api/* by stripping the /api prefix
 app.use((req, _res, next) => {
   if (req.path.startsWith("/api/")) {
     req.url = req.url.replace(/^\/api/, "");
@@ -32,8 +31,8 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Disable caching
-app.use((_req, res, next) => {
+// No-store
+app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
@@ -66,50 +65,42 @@ function authRequired(req, res, next) {
     return next();
   } catch {
     res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
-    return res
-      .status(401)
-      .json({ message: "Session expired. Please sign in again." });
+    return res.status(401).json({ message: "Session expired. Please sign in again." });
   }
 }
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
-// ---------- AUTH ----------
+// -------- AUTH --------
 app.post("/auth/register", async (req, res) => {
   const { name, email, password } = req.body || {};
   if (!name || !email || !password || password.length < 6) {
     return res.status(400).json({ message: "Invalid input" });
   }
-
   const emailNorm = String(email).trim().toLowerCase();
   const exists = await users.findOne({ email: emailNorm });
-  if (exists)
-    return res.status(409).json({ message: "Email already registered" });
+  if (exists) return res.status(409).json({ message: "Email already registered" });
 
   const pass = await bcrypt.hash(password, 10);
   const doc = {
     name: String(name).trim(),
     email: emailNorm,
     pass,
+    visitedStates: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
   const r = await users.insertOne(doc);
-  const user = safeUser({
-    _id: r.insertedId,
-    name: doc.name,
-    email: doc.email,
-  });
-  const token = sign({ uid: user._id, email: user.email });
+  const user = { _id: r.insertedId, name: doc.name, email: doc.email };
+  const token = sign({ uid: String(user._id), email: user.email });
   res.cookie("token", token, cookieOpts);
   return res.status(201).json({ user });
 });
 
 app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body || {};
-  if (!email || !password)
-    return res.status(400).json({ message: "Invalid input" });
+  if (!email || !password) return res.status(400).json({ message: "Invalid input" });
 
   const emailNorm = String(email).trim().toLowerCase();
   const u = await users.findOne({ email: emailNorm });
@@ -117,8 +108,8 @@ app.post("/auth/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  const user = safeUser(u);
-  const token = sign({ uid: user._id, email: user.email });
+  const user = { _id: u._id, name: u.name, email: u.email };
+  const token = sign({ uid: String(u._id), email: u.email });
   res.cookie("token", token, cookieOpts);
   return res.json({ user });
 });
@@ -128,35 +119,40 @@ app.post("/auth/logout", (_req, res) => {
   return res.json({ ok: true });
 });
 
-// ---------- USERS ----------
+// -------- USERS --------
 app.get("/users/me", authRequired, async (req, res) => {
   const uid = req.auth.uid;
   try {
-    const u = await users.findOne(
-      { _id: new ObjectId(uid) },
-      { projection: { pass: 0 } }
-    );
-    if (!u) throw new Error("No user found");
-    return res.json({ user: safeUser(u) });
+    if (!/^[a-f0-9]{24}$/i.test(uid)) {
+      res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
+      return res.status(401).json({ message: "Session expired. Please sign in again." });
+    }
+    const u = await users.findOne({ _id: new ObjectId(uid) }, { projection: { pass: 0 } });
+    if (!u) {
+      res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
+      return res.status(401).json({ message: "Session expired. Please sign in again." });
+    }
+    return res.json({ user: { _id: u._id, name: u.name, email: u.email } });
   } catch {
     res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
-    return res
-      .status(401)
-      .json({ message: "Session expired. Please sign in again." });
+    return res.status(401).json({ message: "Session expired. Please sign in again." });
   }
 });
 
 app.patch("/users/me", authRequired, async (req, res) => {
   const uid = req.auth.uid;
-  console.log("[PATCH /users/me] uid:", uid, "body:", req.body);
 
-  const current = await users.findOne({ _id: new ObjectId(uid) });
-  if (!current) {
-    console.warn("[PATCH /users/me] No current user for uid:", uid);
+  if (!/^[a-f0-9]{24}$/i.test(uid)) {
+    res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
     return res.status(401).json({ message: "Session expired. Please sign in again." });
   }
 
-  // Build minimal patch
+  const current = await users.findOne({ _id: new ObjectId(uid) });
+  if (!current) {
+    res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
+    return res.status(401).json({ message: "Session expired. Please sign in again." });
+  }
+
   const patch = {};
   if (typeof req.body?.name === "string") {
     const newName = req.body.name.trim();
@@ -171,56 +167,66 @@ app.patch("/users/me", authRequired, async (req, res) => {
     }
   }
 
-  // Nothing to change → return current
   if (!Object.keys(patch).length) {
-    console.log("[PATCH /users/me] No-op update");
-    return res.json({ user: safeUser(current) });
+    const safe = { _id: current._id, name: current.name, email: current.email };
+    return res.json({ user: safe });
   }
 
   patch.updatedAt = new Date();
-
-  // NOTE: In MongoDB Node Driver v6+, findOneAndUpdate returns the document directly.
-  // In older drivers, it returned { ok, value }. Handle both:
-  const result = await users.findOneAndUpdate(
+  const r = await users.findOneAndUpdate(
     { _id: current._id },
     { $set: patch },
     { returnDocument: "after", projection: { pass: 0 } }
   );
 
-  const updated = result && (result.value !== undefined ? result.value : result); // v4 vs v6 compatibility
-
+  const updated = r.value;
   if (!updated) {
-    console.warn("[PATCH /users/me] Update returned null for uid:", uid);
+    res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
     return res.status(401).json({ message: "Session expired. Please sign in again." });
   }
 
-  // If email changed, rotate cookie BEFORE sending body
+  // Rotate cookie if email changed
   if (patch.email) {
     const token = sign({ uid, email: updated.email });
     res.cookie("token", token, cookieOpts);
-    console.log("[PATCH /users/me] Rotated cookie for email change:", updated.email);
   }
 
-  return res.json({ user: safeUser(updated) });
+  return res.json({ user: updated });
 });
 
-app.delete("/users/me", authRequired, async (req, res) => {
+// visited states
+app.put("/users/me/visited", authRequired, async (req, res) => {
   const uid = req.auth.uid;
-  await users.deleteOne({ _id: new ObjectId(uid) });
-  res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
-  return res.json({ ok: true });
+  const arr = Array.isArray(req.body?.visitedStates) ? req.body.visitedStates : [];
+  const clean = [...new Set(arr.filter((s) => typeof s === "string" && /^[A-Z]{2}$/.test(s)))];
+
+  const r = await users.findOneAndUpdate(
+    { _id: new ObjectId(uid) },
+    { $set: { visitedStates: clean, updatedAt: new Date() } },
+    { returnDocument: "after", projection: { pass: 0 } }
+  );
+  if (!r.value) return res.status(404).json({ message: "User not found" });
+  return res.json({ visitedStates: r.value.visitedStates || [] });
 });
 
-// ---------- BOOT ----------
+app.get("/users/me/visited", authRequired, async (req, res) => {
+  const uid = req.auth.uid;
+  const u = await users.findOne({ _id: new ObjectId(uid) }, { projection: { pass: 0 } });
+  if (!u) return res.status(404).json({ message: "User not found" });
+  return res.json({ visitedStates: u.visitedStates || [] });
+});
+
+// ---- BOOT ----
 async function boot() {
   await client.connect();
   db = client.db(MONGO_DB);
   users = db.collection("users");
   await users.createIndex({ email: 1 }, { unique: true });
-  app.listen(AUTH_PORT, () =>
-    console.log(`[auth] http://localhost:${AUTH_PORT}`)
-  );
+  app.listen(AUTH_PORT, () => {
+    console.log(`[auth] http://127.0.0.1:${AUTH_PORT}`);
+  });
 }
+
 boot().catch((e) => {
   console.error(e);
   process.exit(1);

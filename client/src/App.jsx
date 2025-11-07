@@ -9,6 +9,8 @@ import StateIndex from "./pages/StateIndex.jsx";
 import StateDetail from "./pages/StateDetail.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
+import Visited from "./pages/Visited.jsx";
+
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -32,9 +34,18 @@ export default function App() {
 
       <main className="container">
         <Routes>
-          <Route path="/" element={<p>Welcome. Use the nav to explore.</p>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route 
+          path="/" 
+          element={<p>Welcome. Use the nav to explore.</p>} />
+          
+          <Route 
+          path="/login" 
+          element={<Login />} />
+
+          <Route 
+          path="/register" 
+          element={<Register />} />
+         
           <Route
             path="/account"
             element={
@@ -43,6 +54,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/account/edit"
             element={
@@ -51,6 +63,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/account/delete"
             element={
@@ -59,9 +72,27 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/states" element={<StateIndex />} />
-          <Route path="/states/:code" element={<StateDetail />} />
-        </Routes>
+
+          <Route 
+          path="/states" element={
+          <StateIndex />} />
+
+          <Route 
+          path="/states/:code" 
+          element={<StateDetail />} />
+
+          <Route 
+          path="/visited" 
+          element={<ProtectedRoute><Visited/>
+          </ProtectedRoute>} />
+
+          <Route
+          path="/visited"
+          element={
+           <ProtectedRoute>
+          <Visited />
+          </ProtectedRoute>}/>
+          </Routes>
       </main>
     </>
   );

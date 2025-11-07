@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
+  // Load session on mount
   useEffect(() => {
     let cancel = false;
     (async () => {
@@ -26,22 +27,17 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
+  // Auth actions
   const login = async (email, password) => {
     setErr("");
-    const r = await api("/auth/login", {
-      method: "POST",
-      data: { email, password },
-    });
+    const r = await api("/auth/login", { method: "POST", data: { email, password } });
     setUser(r.user);
     return r.user;
   };
 
   const register = async (name, email, password) => {
     setErr("");
-    const r = await api("/auth/register", {
-      method: "POST",
-      data: { name, email, password },
-    });
+    const r = await api("/auth/register", { method: "POST", data: { name, email, password } });
     setUser(r.user);
     return r.user;
   };
@@ -55,18 +51,32 @@ export function AuthProvider({ children }) {
   const updateMe = async (patch) => {
     try {
       const r = await api("/users/me", { method: "PATCH", data: patch });
-      setUser(r.user); // <- immediately update context
+      setUser(r.user);
       return r.user;
     } catch (e) {
-      if (e.status === 401) setUser(null); // stale cookie → logout locally
+      // If cookie is stale, server returns 401 → clear UI state
+      setUser(null);
       throw e;
     }
   };
 
   const deleteMe = async () => {
-    setErr("");
     await api("/users/me", { method: "DELETE" });
     setUser(null);
+  };
+
+  // Visited states helpers (safe if not used)
+  const loadVisited = async () => {
+    const r = await api("/users/me/visited");
+    return r.visitedStates || [];
+  };
+
+  const saveVisited = async (visitedStates) => {
+    const r = await api("/users/me/visited", {
+      method: "PUT",
+      data: { visitedStates },
+    });
+    return r.visitedStates || [];
   };
 
   return (
@@ -81,6 +91,8 @@ export function AuthProvider({ children }) {
         logout,
         updateMe,
         deleteMe,
+        loadVisited,
+        saveVisited,
       }}
     >
       {children}
