@@ -124,3 +124,13 @@ ul {
   margin: 0;
   padding-left: 18px;
 }
+
+.state-hero {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2b3142);
+}
+
