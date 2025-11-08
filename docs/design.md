@@ -1,4 +1,4 @@
-Travel Tracker for the United States
+Travel Tracker for the United States  
 Design Document
 
 1. Project Description
@@ -10,187 +10,122 @@ The application includes a complete authentication system where users can create
 The frontend is built with React and uses AJAX to communicate with two backend services running Node.js, Express, and MongoDB. The application is fully client-side rendered.
 
 2. User Personas
-Hans – Infrequent Traveler
 
+Hans – Infrequent Traveler  
 Hans occasionally travels and prefers simple tools that do not overwhelm him.
 
-Goals
+**Goals**
+- Quickly create an account  
+- Log in without complications  
+- Add a few trips with minimal required details  
+- See a simple map of states he has visited  
+- Edit or delete his account when needed  
 
-Quickly create an account
-
-Log in without complications
-
-Add a few trips with minimal required details
-
-See a simple map of states he has visited
-
-Edit or delete his account when needed
-
-Mona – Avid Traveler
-
+Mona – Avid Traveler  
 Mona travels often and likes to keep her travel history organized and detailed.
 
-Goals
-
-Add, edit, and delete trips
-
-Record cost details, transportation types, and notes
-
-Visualize her visited states through an interactive map
-
-Browse and filter trips by different criteria
-
-Monitor her travel progress and spending
+**Goals**
+- Add, edit, and delete trips  
+- Record cost details, transportation types, and notes  
+- Visualize her visited states through an interactive map  
+- Browse and filter trips by different criteria  
+- Monitor her travel progress and spending  
 
 3. User Stories
-As Hans (infrequent traveler)
 
-I want to register so my travel data can be saved.
+**As Hans (infrequent traveler)**
+- I want to register so my travel data can be saved.  
+- I want to log in and see my visited states on a map.  
+- I want to add simple trips without filling too many fields.  
+- I want to update or delete my account.  
+- I want to toggle states on the map to mark where I have been.
 
-I want to log in and see my visited states on a map.
-
-I want to add simple trips without filling too many fields.
-
-I want to update or delete my account.
-
-I want to toggle states on the map to mark where I have been.
-
-As Mona (avid traveler)
-
-I want to create trips with detailed information such as dates, states, costs, and transportation.
-
-I want to edit trips when information changes.
-
-I want to delete trips I no longer need.
-
-I want to view a color-coded map that updates with my travel activity.
-
-I want to filter trips by year, cost range, or state.
-
-I want to see travel statistics like total states visited and total spending.
+**As Mona (avid traveler)**
+- I want to create trips with detailed information such as dates, states, costs, and transportation.  
+- I want to edit trips when information changes.  
+- I want to delete trips I no longer need.  
+- I want to view a color-coded map that updates with my travel activity.  
+- I want to filter trips by year, cost range, or state.  
+- I want to see travel statistics like total states visited and total spending.
 
 4. Wireframes and Mockups
 
-Based on the initial mockup:
+Below is the main mockup used to guide the layout and UI structure of the application. It outlines the navigation bar, map display, trip summary cards, trip list, and trip creation form.
 
-A navigation bar with Account, Sign Off, States, and Trips
+![Travel Tracker Mockup](./mockups/travel-tracker-ui.png)
 
-A large center map of the United States
+**Wireframe Details**
+- A navigation bar containing Account, Sign Off, States, and Trips  
+- A central map of the United States showing visited states  
+- Statistic cards displaying:  
+  - Number of states visited  
+  - Percent visited  
+  - Total cost  
+- A Trips section with a scrollable list of entries  
+- Each trip contains:  
+  - States included  
+  - Cost breakdown  
+  - Transportation  
+  - Notes  
+  - Edit and Delete buttons  
+- A form at the bottom for adding new trips  
 
-Statistic cards showing:
-
-Number of states visited
-
-Percentage visited
-
-Total cost
-
-A Trips section with a scrollable list of entries
-
-Each trip displays:
-
-States included
-
-Cost breakdown
-
-Notes
-
-Edit and Delete buttons
-
-A form at the bottom for adding new trips
-
-These wireframes informed the structure of the UI and component design.
+These wireframes informed the structure of the UI and component layout throughout the project.
 
 5. Feature Breakdown
-Account Management
 
-Sign up and login
+**Account Management**
+- Sign up, login, logout  
+- Edit account information  
+- Delete account  
+- ProtectedRoute components for authenticated areas  
 
-Logout
+**State Map Visualization**
+- Built with react-simple-maps  
+- Clickable states  
+- Hover tooltips  
+- Visited states visually highlighted  
+- Stats update based on visited states  
 
-Edit account information
+**Trip Management (CRUD)**
+- Add new trips  
+- Edit existing trips  
+- Delete trips  
+- Trip details include: states, transportation, cost breakdown, notes, and dates  
+- All trip data is tied to the authenticated user  
 
-Delete account
-
-ProtectedRoute components for authenticated areas
-
-State Map Visualization
-
-Built with react-simple-maps
-
-Clickable states
-
-Hover tooltips
-
-Visited states visually highlighted
-
-Stats update based on visited states
-
-Trip Management (CRUD)
-
-Add new trips
-
-Edit existing trips
-
-Delete trips
-
-Trip details include:
-
-States
-
-Transportation
-
-Cost breakdown
-
-Notes
-
-Dates
-
-All trip data is tied to the authenticated user
-
-Trip Filtering
-
-Filter by year
-
-Filter by visited states
-
-Filter by minimum or maximum cost
+**Trip Filtering**
+- Filter by year  
+- Filter by visited states  
+- Filter by minimum or maximum cost  
 
 6. System Architecture
-Frontend
 
-React with Hooks
+**Frontend**
+- React with Hooks  
+- React Router  
+- Component-scoped CSS  
+- Fetch API for AJAX  
+- Map built with react-simple-maps  
 
-React Router
-
-Component-scoped CSS
-
-Fetch API for AJAX
-
-Map built with react-simple-maps
-
-Backend
+**Backend**
 
 Two microservices:
+- **Auth Server (Port 4000)**  
+  Handles registration, login, logout  
+  Stores user profile and visited states  
+  MongoDB collection: `users`
 
-Auth Server (Port 4000)
-
-Registration, login, logout
-
-Stores user profile and visited states
-
-MongoDB collection: users
-
-Trips API (Port 3000)
-
-CRUD operations for trips
-
-MongoDB collection: trips
+- **Trips API (Port 3000)**  
+  CRUD operations for trips  
+  MongoDB collection: `trips`
 
 Both services use the official MongoDB driver.
 
 7. Data Model
-Users Collection
+
+**Users Collection**
+```json
 {
   "_id": "ObjectId",
   "email": "string",
@@ -199,8 +134,10 @@ Users Collection
   "createdAt": "Date",
   "updatedAt": "Date"
 }
-
 Trips Collection
+
+json
+Copy code
 {
   "_id": "ObjectId",
   "userId": "ObjectId",
@@ -219,8 +156,8 @@ Trips Collection
   "createdAt": "Date",
   "updatedAt": "Date"
 }
+Technologies and Libraries
 
-8. Technologies and Libraries
 Frontend
 
 HTML, CSS
@@ -253,7 +190,8 @@ GitHub
 
 Netlify, Vercel, Render, or Railway for deployment
 
-9. Division of Work
+Division of Work
+
 Stewart
 
 UI for profile page
@@ -276,6 +214,6 @@ Visited states implementation
 
 Backend logic for user and state data
 
-10. Purpose and Usefulness
+Purpose and Usefulness
 
 Travel Tracker for the United States helps people maintain a record of their travel experiences. Users can easily track where they have been, how much they have spent, and details about each trip. The map visualization and trip logging features make the app valuable for occasional travelers who want a simple tracker as well as frequent travelers who want a structured, detailed record of their journeys.
