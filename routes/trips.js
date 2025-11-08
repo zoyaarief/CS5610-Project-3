@@ -16,10 +16,12 @@ router.post("/trips/userId/:userId", async (req, res) => {
       startDate = null,
       endDate = null,
       legs = [],
-      transportationExpense = 0,
-      foodExpense = 0,
-      lodgingExpense = 0,
-      extraExpense = 0,
+      expenses: {
+        transportationExpense = 0,
+        foodExpense = 0,
+        lodgingExpense = 0,
+        extraExpense = 0,
+      },
       notes = "",
     } = req.body;
 
@@ -133,6 +135,8 @@ router.patch("/trips/:tripId", async (req, res) => {
     } catch {
       return res.status(400).json({ error: "Invalid trip ID format" });
     }
+
+    delete updates._id; // Prevent changing the _id field
     const updatedTrip = await tripsDB.updateTrip(objectTripId, updates);
     if (!updatedTrip) {
       return res.status(404).json({ error: "Trip not found" });

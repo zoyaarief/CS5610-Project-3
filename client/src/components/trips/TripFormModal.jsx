@@ -1,40 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 
-export default function TripFormModal({ show, onHide, onSave }) {
-  const [formData, setFormData] = useState({
+export default function TripFormModal({ show, onHide, onSave, initialData }) {
+  const blankForm = {
     title: "",
     description: "",
     startDate: "",
     endDate: "",
     legs: [],
     expenses: {
-      transportationExpense: "",
-      foodExpense: "",
-      lodgingExpense: "",
-      extraExpense: "",
+      transportation: "",
+      food: "",
+      lodging: "",
+      extra: "",
     },
     notes: "",
-  });
+  };
+
+  const blankLeg = { city: "", state: "", days: "" };
+
+  const [formData, setFormData] = useState(blankForm);
+  const [newLeg, setNewLeg] = useState(blankLeg);
+
+  useEffect(() => {
+    if (!show) return;
+    if (initialData) {
+        console.log("Editing trip:", initialData);
+      setFormData({
+        _id: initialData._id,
+        title: initialData.title ?? "",
+        description: initialData.description ?? "",
+        startDate: initialData.startDate ?? "",
+        endDate: initialData.endDate ?? "",
+        legs: initialData.legs ?? [],
+        expenses: {
+          transportation: initialData.expenses.transportation ?? 0,
+          food: initialData.expenses.food ?? 0,
+          lodging: initialData.expenses.lodging ?? 0,
+          extra: initialData.expenses.extra ?? 0,
+        },
+        notes: initialData.notes ?? "",
+      });
+    } else {
+      setFormData(blankForm);
+    }
+  }, [initialData, show]);
+
+  useEffect(() => {
+    if (!show) {
+        setNewLeg(blankLeg);
+    }
+    }, [show]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value === "" ? "" : value }));
   };
 
   const handleExpenseChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      expenses: { ...prev.expenses, [name]: value },
+      expenses: { ...prev.expenses, [name]: value === "" ? 0 : Number(value) },
     }));
   };
 
-  const addLeg = () => {
+  const handleAddLeg = () => {
+    //if (!newLeg.city || !newLeg.state) return alert("Please fill in both city and state for the new leg.");
     setFormData((prev) => ({
       ...prev,
-      legs: [...prev.legs, { city: "", state: "", days: "" }],
+      legs: [...prev.legs, { ...newLeg, days: parseInt(newLeg.days) || 0 }],
     }));
+    setNewLeg(blankLeg);
   };
 
   const handleLegChange = (index, field, value) => {
@@ -52,48 +89,20 @@ export default function TripFormModal({ show, onHide, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Normalize payload for backend
-    const payload = {
-      title: formData.title,
-      description: formData.description,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      legs: formData.legs.map((l) => ({
-        city: l.city.trim(),
-        state: l.state.trim(),
-        days: parseInt(l.days) || 0,
-      })),
-      transportationExpense: parseFloat(formData.expenses.transportationExpense) || 0,
-      foodExpense: parseFloat(formData.expenses.foodExpense) || 0,
-      lodgingExpense: parseFloat(formData.expenses.lodgingExpense) || 0,
-      extraExpense: parseFloat(formData.expenses.extraExpense) || 0,
-      notes: formData.notes,
-    };
-
-    onSave(payload);
-    setFormData({
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      legs: [],
-      expenses: {
-        transportationExpense: "",
-        foodExpense: "",
-        lodgingExpense: "",
-        extraExpense: "",
-      },
-      notes: "",
-    });
+    if (formData._id) {
+        onSave(formData, true); // Pass true to indicate edit
+    } else {
+        onSave(formData);
+    }
     onHide();
   };
 
   return (
     <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Add a New Trip</Modal.Title>
+        <Modal.Title>{initialData ? "Edit Trip" : "Add a New Trip"}</Modal.Title>
       </Modal.Header>
+
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
@@ -146,7 +155,7 @@ export default function TripFormModal({ show, onHide, onSave }) {
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <Form.Label>Legs</Form.Label>
-              <Button variant="outline-secondary" size="sm" onClick={addLeg}>
+              <Button variant="success" size="sm" onClick={handleAddLeg}>
                 + Add Leg
               </Button>
             </div>
@@ -194,21 +203,21 @@ export default function TripFormModal({ show, onHide, onSave }) {
           <h6 className="mt-4">Expenses</h6>
           <Row>
             {[
-              "transportationExpense",
-              "foodExpense",
-              "lodgingExpense",
-              "extraExpense",
+              "transportation",
+              "food",
+              "lodging",
+              "extra",
             ].map((key) => (
               <Col md={6} key={key} className="mb-2">
                 <Form.Label className="text-capitalize">
-                  {key.replace("Expense", "")}
+                  {key}
                 </Form.Label>
                 <Form.Control
                   type="number"
                   name={key}
                   value={formData.expenses[key]}
                   onChange={handleExpenseChange}
-                  placeholder={`Enter ${key.replace("Expense", "")} cost`}
+                  placeholder=""
                 />
               </Col>
             ))}

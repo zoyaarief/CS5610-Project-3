@@ -125,3 +125,9 @@ ul {
   margin: 0;
   padding-left: 18px;
 }
+
+.accordion-card {
+  background: rgb(6, 154, 199);
+  color: black;
+  text-align: center;
+}
