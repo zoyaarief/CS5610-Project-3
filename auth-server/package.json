@@ -1,24 +1,25 @@
 {
   "name": "auth-server",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Authentication server for the Travel Tracker Project",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "dev": "nodemon server.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "cookie-parser": "^1.4.7",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.10.0",
-    "node": "^25.1.0",
-    "server.js": "^1.0.0"
+    "mongodb": "^6.20.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7",
-    "prettier": "^3.6.2"
+    "eslint": "^9.37.0",
+    "nodemon": "^3.1.0"
   }
 }

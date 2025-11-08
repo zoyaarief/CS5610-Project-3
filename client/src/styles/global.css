@@ -131,3 +131,108 @@ ul {
   color: black;
   text-align: center;
 }
+.state-hero {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2b3142);
+}
+
+/* ---- Home ---- */
+.home {
+  display: grid;
+  gap: 2rem;
+}
+
+/* Hero */
+.home-hero {
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(1200px 400px at -10% -20%, rgba(255,255,255,0.06), transparent 60%),
+    radial-gradient(900px 300px at 120% 0%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(135deg, rgba(80,180,255,0.18), rgba(150,120,255,0.12));
+  border: 1px solid var(--border, #2b3142);
+}
+
+.home-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0 0 .5rem 0;
+  color: var(--text, #eaf0ff);
+  letter-spacing: .3px;
+}
+
+.home-subtitle {
+  max-width: 60ch;
+  line-height: 1.6;
+  opacity: .9;
+  margin: 0 0 1.5rem 0;
+}
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2b3142);
+  background: var(--card, #121a24);
+  color: var(--text, #eaf0ff);
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-lg { padding: .9rem 1.15rem; }
+.btn.primary {
+  background: linear-gradient(135deg, #5aa8ff, #7a6bff);
+  border-color: transparent;
+  color: white;
+}
+
+/* Features grid */
+.home-features {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.feature-card {
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2b3142);
+  background: var(--card, #0f1621);
+}
+.feature-card h3 {
+  margin: 0 0 .25rem 0;
+  font-size: 1.1rem;
+}
+
+/* Tip strip */
+.home-tip {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .8rem 1rem;
+  border: 1px dashed var(--border, #2b3142);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+}
+.tip-badge {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .6px;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  background: rgba(122,107,255,.2);
+  border: 1px solid rgba(122,107,255,.4);
+}
+
+

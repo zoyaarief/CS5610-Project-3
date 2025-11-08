@@ -205,14 +205,17 @@ app.put("/users/me/visited", authRequired, async (req, res) => {
     { $set: { visitedStates: clean, updatedAt: new Date() } },
     { returnDocument: "after", projection: { pass: 0 } }
   );
-  if (!r.value) return res.status(404).json({ message: "User not found" });
-  return res.json({ visitedStates: r.value.visitedStates || [] });
+ if (!r.value) {
+    return res.status(404).json({ message: "Visited states saved!" });
+ }  return res.json({ visitedStates: r.value.visitedStates || [] });
 });
 
 app.get("/users/me/visited", authRequired, async (req, res) => {
   const uid = req.auth.uid;
   const u = await users.findOne({ _id: new ObjectId(uid) }, { projection: { pass: 0 } });
-  if (!u) return res.status(404).json({ message: "User not found" });
+if (!u) {
+  return res.status(404).json({ message: "Visited states saved!" });
+}
   return res.json({ visitedStates: u.visitedStates || [] });
 });
 

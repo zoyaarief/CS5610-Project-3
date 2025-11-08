@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Account from "./pages/Account.jsx";
@@ -11,7 +12,6 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import Visited from "./pages/Visited.jsx";
 import Trip from "./pages/Trip.jsx";
-
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -37,18 +37,12 @@ export default function App() {
 
       <main className="container">
         <Routes>
-          <Route 
-          path="/" 
-          element={<p>Welcome. Use the nav to explore.</p>} />
-          
-          <Route 
-          path="/login" 
-          element={<Login />} />
+          {/* Home now renders the Home page component */}
+          <Route path="/" element={<Home />} />
 
-          <Route 
-          path="/register" 
-          element={<Register />} />
-         
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
           <Route
             path="/account"
             element={
@@ -57,7 +51,6 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/account/edit"
             element={
@@ -66,7 +59,6 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/account/delete"
             element={
@@ -76,38 +68,42 @@ export default function App() {
             }
           />
 
-          <Route 
-          path="/states" element={
-          <StateIndex />} />
-
-          <Route 
-          path="/states/:code" 
-          element={<StateDetail />} />
-
-          <Route 
-          path="/visited" 
-          element={<ProtectedRoute><Visited/>
-          </ProtectedRoute>} />
+          <Route path="/states" element={<StateIndex />} />
+          <Route path="/states/:code" element={<StateDetail />} />
 
           <Route
-          path="/visited"
-          element={
-           <ProtectedRoute>
-          <Visited />
-          </ProtectedRoute>}/>
-
-          <Route 
-          path="/trip" 
-          element={<ProtectedRoute><Trip/>
-          </ProtectedRoute>} />
+            path="/visited"
+            element={
+              <ProtectedRoute>
+                <Visited />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/visited"
+            element={
+              <ProtectedRoute>
+                <Visited />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
-          path="/trip"
-          element={
-           <ProtectedRoute>
-          <Trip />
-          </ProtectedRoute>}/>
-          
+            path="/trip"
+            element={
+              <ProtectedRoute>
+                <Trip />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/trip"
+            element={
+              <ProtectedRoute>
+                <Trip />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </>
