@@ -3,7 +3,7 @@ import { MongoClient, ObjectId } from "mongodb";
 
 const {
   MONGO_URI = "mongodb://127.0.0.1:27017",
-  MONGO_DB = "traveltracker_p3",
+  MONGO_DB = "tripTracker",
 } = process.env;
 
 const client = new MongoClient(MONGO_URI);
