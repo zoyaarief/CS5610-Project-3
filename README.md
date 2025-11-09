@@ -121,7 +121,7 @@ Create a .env file inside auth-server with:
 
 AUTH_PORT=4000
 MONGO_URI=mongodb://127.0.0.1:27017
-MONGO_DB=traveltracker_p3
+MONGO_DB=tripTracker
 AUTH_SECRET=change-me-to-a-long-random-string
 NODE_ENV=development
 
