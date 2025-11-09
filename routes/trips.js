@@ -17,19 +17,19 @@ router.post("/trips/userId/:userId", async (req, res) => {
       endDate = null,
       legs = [],
       expenses: {
-        transportationExpense = 0,
-        foodExpense = 0,
-        lodgingExpense = 0,
-        extraExpense = 0,
+        transportation = 0,
+        food = 0,
+        lodging = 0,
+        extra = 0,
       },
       notes = "",
     } = req.body;
 
     const expenses = {
-      transportation: transportationExpense,
-      food: foodExpense,
-      lodging: lodgingExpense,
-      extra: extraExpense,
+      transportation: transportation,
+      food: food,
+      lodging: lodging,
+      extra: extra,
     };
 
     const processedLegs = [];
@@ -49,6 +49,8 @@ router.post("/trips/userId/:userId", async (req, res) => {
       });
     }
 
+    //console.log("Expenses:", expenses); // DEBUG
+
     const trip = await tripsDB.createTrip({
       userId,
       title,
@@ -65,26 +67,6 @@ router.post("/trips/userId/:userId", async (req, res) => {
     res.status(500).json({ error: "Failed to create trip" });
   }
 });
-
-// router.post("/trips/userId/:userId", async (req, res) => {
-//   console.log("Received request to create trip:", req.body);
-//   try {
-//     const userId = req.params.userId;
-//     const { title } = req.body;
-
-//     const trip = await tripsDB.createTrip({
-//       userId,
-//       title,
-//       legs: [],
-//       expenses: {},
-//     });
-
-//     res.status(201).json(trip);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Failed" });
-//   }
-// });
 
 // Get all trips for a user
 router.get("/trips", async (req, res) => {

@@ -1,12 +1,34 @@
 import mapboxgl from "mapbox-gl";
 import React, { useEffect, useRef } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
+import statesData from "../../data/states.json";
+import statesGeoJSON from "../../data/gz_2010_us_040_00_5m.json";
 
 mapboxgl.accessToken = "pk.eyJ1Ijoic2FsbWVpZGExOTkzIiwiYSI6ImNtaGxmcDc1bTAwNnAycHE0MHBzMjQyeW4ifQ.CyQk_2C7_6cSQjidPsgjEA";
 
-export default function USMap({ visitedStates }) {
+
+// export default function test() {
+//   return <div>test</div>;
+// }
+
+const stateAbbrToName = Object.fromEntries(
+  statesData.map(({ code, name }) => [code, name])
+);
+
+export default function USMap({ visitedStates = [] }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
+
+  const visitedStateNames = visitedStates.map(code => stateAbbrToName[code]).filter(Boolean);
+  console.log("Visited state names:", visitedStateNames); // DEBUG
+  const [mapLoaded, setMapLoaded] = React.useState(false);
+
+  const fillColor = [
+  "match",
+  ["get", "NAME"],
+  "__none__", "#E0E0E0",
+  "#E0E0E0"
+];
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -18,21 +40,15 @@ export default function USMap({ visitedStates }) {
     });
     map.current.on("load", () => {
       map.current.addSource("states", {
-        type: "vector",
-        url: "mapbox://mapbox.us_states_2015_vector",
+        type: "geojson",
+        data: statesGeoJSON,
       });
       map.current.addLayer({
         id: "state-fills",
         type: "fill",
         source: "states",
-        "source-layer": "state_2015",
         paint: {
-          "fill-color": [
-            "match",
-            ["get", "STATE_ABBR"],
-            ...visitedStates.flatMap(code => [code, "#3CB043"]),
-            "#E0E0E0" // default color
-          ],
+          "fill-color": fillColor,
           "fill-opacity": 0.7,
         },
       });
@@ -40,25 +56,26 @@ export default function USMap({ visitedStates }) {
         id: "state-borders",
         type: "line",
         source: "states",
-        "source-layer": "state_2015",
         paint: {
           "line-color": "#FFFFFF",
           "line-width": 2,
         },
       });
+      setMapLoaded(true);
     });
-  }, []);
+  });
 
   useEffect(() => {
+    if (!mapLoaded) return;
     if (!map.current || !map.current.getLayer("state-fills")) return;
 
     map.current.setPaintProperty("state-fills", "fill-color", [
       "match",
-      ["get", "STATE_ABBR"],
-      ...visitedStates.flatMap(code => [code, "#3CB043"]),
+      ["get", "NAME"],
+      ...visitedStateNames.flatMap(name => [name, "#3CB043"]),
       "#E0E0E0"
     ]);
-  }, [visitedStates]);
+  }, [visitedStateNames, mapLoaded]);
 
   return (
     <div

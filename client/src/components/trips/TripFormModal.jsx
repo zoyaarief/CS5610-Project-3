@@ -217,7 +217,7 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
                   name={key}
                   value={formData.expenses[key]}
                   onChange={handleExpenseChange}
-                  placeholder=""
+                  placeholder="0"
                 />
               </Col>
             ))}
