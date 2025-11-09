@@ -6,11 +6,8 @@ import statesGeoJSON from "../../data/gz_2010_us_040_00_5m.json";
 
 mapboxgl.accessToken = "pk.eyJ1Ijoic2FsbWVpZGExOTkzIiwiYSI6ImNtaGxmcDc1bTAwNnAycHE0MHBzMjQyeW4ifQ.CyQk_2C7_6cSQjidPsgjEA";
 
-
-// export default function test() {
-//   return <div>test</div>;
-// }
-
+// Create a mapping from state abbreviation to full state name
+// Example: { "CA": "California", "TX": "Texas", ... }
 const stateAbbrToName = Object.fromEntries(
   statesData.map(({ code, name }) => [code, name])
 );
@@ -19,10 +16,14 @@ export default function USMap({ visitedStates = [] }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
+  // Map visited state codes to full state names
   const visitedStateNames = visitedStates.map(code => stateAbbrToName[code]).filter(Boolean);
+
   console.log("Visited state names:", visitedStateNames); // DEBUG
+
   const [mapLoaded, setMapLoaded] = React.useState(false);
 
+  // Define fill color expression for Mapbox
   const fillColor = [
   "match",
   ["get", "NAME"],

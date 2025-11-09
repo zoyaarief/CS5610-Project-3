@@ -235,4 +235,19 @@ ul {
   border: 1px solid rgba(122,107,255,.4);
 }
 
+/* =========================
+   Trip Stats Card
+========================= */
+.stats-card {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 
+.stats-card-states {
+  color: #17d410;
+}
+
+.btn-add-trip {
+  background-color: #28a745;
+  border-color: #28a745;
+}

@@ -1,4 +1,3 @@
-import React from "react";
 import { Accordion, Card, Row, Col, Button } from "react-bootstrap";
 
 export default function TripAccordion({ trips, onEdit, onDelete }) {

@@ -23,7 +23,7 @@ export default function App() {
           <Link to="/">Home</Link>
           <Link to="/states">States</Link>
           {user && <Link to="/visited">Visited</Link>}
-          {user && <Link to="/trip">Trips</Link>}
+          {user && <Link to="/trip">My Trips</Link>}
           {!user && <Link to="/login">Login</Link>}
           {!user && <Link to="/register">Register</Link>}
           {user && <Link to="/account">Account</Link>}
