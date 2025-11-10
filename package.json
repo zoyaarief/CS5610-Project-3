@@ -7,9 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2-runtime start ecosystem.config.cjs",
-    "dev:auth": "cd auth-server && node server.js",
-    "dev:backend": "node backend.js",
-    "dev:frontend": "cd client && vite",
+    "dev:auth": "cd auth-server && npm install && node server.js",
+    "dev:backend": "npm install && node backend.js",
+    "dev:frontend": "cd client && npm install && vite",
     "format": "prettier --write ",
     "lint": "eslint ."
   },
