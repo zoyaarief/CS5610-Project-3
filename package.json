@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch backend.js",
+    "start": "pm2 start ecosystem.config.cjs",
+    "dev:auth": "cd auth-server && node server.js",
+    "dev:backend": "node backend.js",
+    "dev:frontend": "cd client && vite",
     "format": "prettier --write ",
     "lint": "eslint ."
   },
@@ -22,18 +25,20 @@
   },
   "homepage": "https://github.com/salmeida1993/CS5610-Project-3#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "mapbox-gl": "^3.0.1",
     "mongodb": "6.20",
     "nodemon": "^3.1.10",
+    "pm2": "^6.0.13",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.5",
-    "bcryptjs": "^3.0.2",
-    "cookie-parser": "^1.4.6",
-    "jsonwebtoken": "^9.0.2",
-    "mapbox-gl": "^3.0.1"
+    "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",

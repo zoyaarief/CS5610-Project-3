@@ -6,9 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const {
-  AUTH_PORT = 4000,
-  //MONGO_URI = "mongodb://127.0.0.1:27017",
-  //MONGO_DB = "tripTracker",
+  AUTH_PORT = process.env.PORT || 4000,
   MONGO_URI = "mongodb://localhost:27017",
   MONGO_DB = "tripTracker",
   AUTH_SECRET = "change-me-to-a-long-random-string",
