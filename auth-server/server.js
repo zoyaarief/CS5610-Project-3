@@ -194,6 +194,35 @@ app.patch("/users/me", authRequired, async (req, res) => {
   return res.json({ user: updated });
 });
 
+// Delete my account
+app.delete("/users/me", authRequired, async (req, res) => {
+  const uid = req.auth.uid;
+
+  // Validate ObjectId format. If invalid, clear cookie and treat as expired session.
+  if (!/^[a-f0-9]{24}$/i.test(uid)) {
+    res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
+    return res.status(401).json({ message: "Session expired. Please sign in again." });
+  }
+
+  const _id = new ObjectId(uid);
+
+  // Delete the user
+  const result = await users.deleteOne({ _id });
+  // Clear the auth cookie regardless, to end the session
+  res.clearCookie("token", { ...cookieOpts, maxAge: 0 });
+
+  if (result.deletedCount === 0) {
+    return res.status(404).json({ message: "User not found." });
+  }
+
+  // Optional: if you want to cascade delete trips here, you would also
+  // call your trips DB to remove user trips. Since trips live on the
+  // app server (PORT 3000) not in the auth server, keep it simple and
+  // just remove the user here. (We can add a cascade later on /trips.)
+  return res.json({ ok: true });
+});
+
+
 // visited states
 app.put("/users/me/visited", authRequired, async (req, res) => {
   const uid = req.auth.uid;
