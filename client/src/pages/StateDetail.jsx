@@ -74,11 +74,6 @@ export default function StateDetail() {
         }}
       />
 
-      {/* Debug line (keep for now; remove later) */}
-      <p className="help" style={{ marginTop: 8 }}>
-        Image URL tried: <code>{src}</code>
-      </p>
-
       <section>
         <h2 style={{ marginTop: 16 }}>About {state.name}</h2>
         <p className="help">Add quick facts, links, or your own notes here.</p>
