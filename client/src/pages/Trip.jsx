@@ -6,6 +6,7 @@ import TripAccordion from "../components/trips/TripAccordion.jsx";
 import TripStats from "../components/trips/TripStats.jsx";
 import TripFilters from "../components/trips/TripFilters.jsx";
 
+
 function getVisitedStates(trips) {
   const states = new Set();
   trips.forEach((trip) => {
@@ -32,13 +33,34 @@ export default function Trip() {
   const [sortFilter, setSortFilter] = useState("none");
   const [stateFilter, setStateFilter] = useState("");
   const [maxExpense, setMaxExpense] = useState("");
+  const [userId, setUserId] = useState(null);
 
-  const userId = "testUserId"; // Replace with actual user ID from auth context
+  //const userId = "testUserId"; // Replace with actual user ID from auth context
+
+  useEffect(() => {
+    // Fetch user ID from auth context or other source
+    async function fetchUserId() {
+      try {
+        console.log("Fetching user ID..."); // DEBUG
+        const res = await fetch("/users/me");
+        if (!res.ok) {
+          setUserId(null);
+          return;
+        }
+        const data = await res.json();
+  
+        setUserId(data.user._id);
+      } catch (error) {
+        console.error("Error fetching user ID:", error);
+      }
+    }
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
     async function loadTrips() {
       try {
-        const res = await fetch(`/api/trips?userId=${requestAnimationFrame.userId}`);
+        const res = await fetch(`/api/trips?userId=${userId}`);
         const data = await res.json();
         console.log("Fetched trips:", data); // DEBUG
         setTrips(data);
@@ -47,7 +69,7 @@ export default function Trip() {
       }
     }
     loadTrips();
-  }, []);
+  }, [userId]);
 
   const handleEditTrip = (trip) => {
     console.log("Editing trip:", trip);
