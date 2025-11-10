@@ -10,31 +10,36 @@ Stewart Almeida – Trip Logging, Map Visualization, Dashboard & Stats
 Course: CS5610 Web Development
 Instructor: John Alexis Guerra Gomez
 
-🎯 Project Objective
+## 🎯 Project Objective
 
 This project is a full-stack web application that lets users track their travels across the United States.
 Users can create an account, log trips they’ve taken, and view a color-coded U.S. map that highlights the states they’ve visited.
 
 Each user can:
 
-✈️ Create an account and securely log in/out
+-- Create an account and securely log in/out
 
-🧑‍💻 Edit or delete their account information
+-- Edit or delete their account information
 
-🗺️ Add, edit, and delete trips
+-- Add, edit, and delete trips
 
-💸 View travel statistics (total states visited, total trip costs, % of U.S. covered)
+-- View travel statistics (total states visited, total trip costs, % of U.S. covered)
 
-📍 Browse state detail pages with regional info and fun facts
+-- Browse state detail pages with regional info and fun facts
 
-🧠 Tech Stack
-Layer	Technology
+## 🧠 Tech Stack
+
 Frontend	React (Hooks), Vite, HTML5, CSS3
+
 Backend	Node.js, Express
+
 Database	MongoDB (using official driver, no Mongoose)
+
 Libraries	react-simple-maps (for U.S. map), bcryptjs, jsonwebtoken
+
 Development Tools	Prettier (code formatting), ESLint (linting), GitHub, VS Code
-🧑‍🎨 Design Overview
+
+## 🧑‍🎨 Design Overview
 
 Theresa focused on user account management and authentication, while Stewart focused on trip management and visualization.
 Together, these features create a complete travel-tracking experience.
@@ -62,11 +67,10 @@ Calculate total cost and states visited
 
 Display interactive map using react-simple-maps
 
-🧩 Database Structure
+## 🧩 Database Structure
 Collections
-
+```
 users
-
 {
   "_id": ObjectId,
   "name": "Theresa Coleman",
@@ -75,57 +79,84 @@ users
   "createdAt": ISODate,
   "updatedAt": ISODate
 }
+```
 
-
+```
 trips
-
 {
   "_id": ObjectId,
-  "userId": ObjectId,
-  "tripName": "East Coast Adventure",
-  "statesVisited": ["MA", "NY", "PA"],
-  "totalCost": 850,
-  "notes": "Visited family and historic sites.",
+  "userId": String,
+  "title": "Example Trip",
+  "description": "Example description",
+  "startDate": ISODate,
+  "endDate": ISODate,
+  "legs": [
+  { "_id": ObjectId, "state": "IL", "city": "Chicago", "days": 4, "latitude": null, "longitude": null, "createdAt": ISODate, "updatedAt": ISODate}
+  ],
+  "expenses": {
+  "transportation": 100,
+  "food": 50,
+  "lodging": 200,
+  "extra": 100
+  },
+  "notes": "Test note",
   "createdAt": ISODate,
   "updatedAt": ISODate
 }
+```
 
-⚙️ Installation & Setup
-🧱 Prerequisites
+## ⚙️ Local Installation / Setup / Development
+### 🧱 Prerequisites
 
 Node.js 22+
 
 MongoDB running locally (mongodb://127.0.0.1:27017)
 
-1️⃣ Start the Backend
-cd auth-server
-npm install
-node server.js
+Create database called `tripTracker`
+- Create two collections: `users` and `trips`
+### Scripts
+
+Open 3 terminal windows and run the following commands in their respective window:
+1. Window 1: Authentication (PORT 4000)
+   ```
+   npm run dev:auth
+   ```
+2. Window 2: Backend (PORT 3000)
+   ```
+   npm run dev:backend
+   ```
+3. Window 3: Frontend (Vite, PORT 5174)
+   ```
+   npm run dev:frontend
+   ```
 
 
-Default runs on: http://127.0.0.1:4000
-
-2️⃣ Start the Frontend
-cd client
-npm install
-npm run dev
+Defaults runs on: http://127.0.0.1:PORT 
 
 
-Default runs on: http://localhost:5174
-
-Make sure both the client and auth-server are running simultaneously.
+Make sure both the frontend and auth-server are running simultaneously.
 
 🔐 Environment Variables
 
 Create a .env file inside auth-server with:
-
+```
 AUTH_PORT=4000
 MONGO_URI=mongodb://127.0.0.1:27017
 MONGO_DB=tripTracker
 AUTH_SECRET=change-me-to-a-long-random-string
 NODE_ENV=development
-
-🧭 Usage Instructions
+```
+Create a .env file at the project root with:
+```
+MONGODB_URI=mongodb://127.0.0.1:27017/tripTracker
+PORT=3000
+MAPBOX_TOKEN=pk.eyJ1Ijoic2FsbWVpZGExOTkzIiwiYSI6ImNtaGxmcDc1bTAwNnAycHE0MHBzMjQyeW4ifQ.CyQk_2C7_6cSQjidPsgjEA
+```
+Create a .env file inside client with:
+```
+VITE_MAPBOX_TOKEN=pk.eyJ1Ijoic2FsbWVpZGExOTkzIiwiYSI6ImNtaGxmcDc1bTAwNnAycHE0MHBzMjQyeW4ifQ.CyQk_2C7_6cSQjidPsgjEA
+```
+## 🧭 Usage Instructions
 
 Visit http://localhost:5174
 
@@ -137,7 +168,7 @@ Add trips from your dashboard and view the color-coded map.
 
 Delete account if desired (handled safely with cookie cleanup).
 
-🧹 Developer Notes
+## 🧹 Developer Notes
 
 The project uses Prettier for code formatting.
 Run npm run format in the project root to format both client & server.
@@ -150,37 +181,31 @@ ESLint configuration ensures clean, consistent syntax.
 
 Environment secrets are excluded from source control.
 
-📸 Screenshots
+## 📸 Screenshots
 
-(Insert screenshots once your app is live)
+![Img 1](img/p3_1.png)
+![Img 2](img/p3_2.png)
+![Img 3](img/p3_3.png)
 
-🖥️ Login / Register page
-
-🧭 Dashboard with trips and color-coded map
-
-🧑‍💻 Edit Account page
-
-🌐 Deployment
+## 🌐 Deployment
 
 The application can be deployed with:
 
-Render or Railway for Node.js backend
-
-Netlify or Vercel for React frontend
+Render
 
 Environment variables should match .env from development.
 
-🧾 License
+## 🧾 License
 
 This project is licensed under the MIT License.
 
 MIT License © 2025 Theresa Coleman & Stewart Almeida
 
-🧪 Smoke Test
+## 🧪 Smoke Test
 
 After setup:
 
-Start both servers.
+Start servers.
 
 Visit /register → create an account.
 
