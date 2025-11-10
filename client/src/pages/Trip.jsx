@@ -131,7 +131,9 @@ export default function Trip() {
       t = t.filter((trip) => getTotalExpense(trip) <= Number(maxExpense));
     }
     if (stateFilter !== "") {
-      t = t.filter((trip) => trip.legs?.some((leg) => leg.state === stateFilter));
+      t = t.filter((trip) =>
+        trip.legs?.some((leg) => leg.state === stateFilter)
+      );
     }
 
     return t;
@@ -158,7 +160,7 @@ export default function Trip() {
       <div className="d-flex justify-content-between align-items-center mb-3">
         {/* Button to open Trip Form Modal */}
         <Button
-        className="btn btn-add-trip"
+          className="btn btn-add-trip"
           variant="primary"
           onClick={() => {
             setSelectedTrip(null);

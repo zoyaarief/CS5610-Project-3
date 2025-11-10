@@ -25,7 +25,7 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
   useEffect(() => {
     if (!show) return;
     if (initialData) {
-        console.log("Editing trip:", initialData);
+      console.log("Editing trip:", initialData);
       setFormData({
         _id: initialData._id,
         title: initialData.title ?? "",
@@ -48,9 +48,9 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
 
   useEffect(() => {
     if (!show) {
-        setNewLeg(blankLeg);
+      setNewLeg(blankLeg);
     }
-    }, [show]);
+  }, [show]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,9 +90,9 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData._id) {
-        onSave(formData, true); // Pass true to indicate edit
+      onSave(formData, true); // Pass true to indicate edit
     } else {
-        onSave(formData);
+      onSave(formData);
     }
     onHide();
   };
@@ -100,7 +100,9 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
   return (
     <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>{initialData ? "Edit Trip" : "Add a New Trip"}</Modal.Title>
+        <Modal.Title>
+          {initialData ? "Edit Trip" : "Add a New Trip"}
+        </Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={handleSubmit}>
@@ -167,14 +169,18 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
                     <Form.Control
                       placeholder="City"
                       value={leg.city}
-                      onChange={(e) => handleLegChange(index, "city", e.target.value)}
+                      onChange={(e) =>
+                        handleLegChange(index, "city", e.target.value)
+                      }
                     />
                   </Col>
                   <Col md={5}>
                     <Form.Control
                       placeholder="State (e.g., TX)"
                       value={leg.state}
-                      onChange={(e) => handleLegChange(index, "state", e.target.value)}
+                      onChange={(e) =>
+                        handleLegChange(index, "state", e.target.value)
+                      }
                     />
                   </Col>
                   <Col md={2}>
@@ -182,7 +188,9 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
                       type="number"
                       placeholder="Days"
                       value={leg.days}
-                      onChange={(e) => handleLegChange(index, "days", e.target.value)}
+                      onChange={(e) =>
+                        handleLegChange(index, "days", e.target.value)
+                      }
                     />
                   </Col>
                 </Row>
@@ -202,16 +210,9 @@ export default function TripFormModal({ show, onHide, onSave, initialData }) {
           {/* Expenses */}
           <h6 className="mt-4">Expenses</h6>
           <Row>
-            {[
-              "transportation",
-              "food",
-              "lodging",
-              "extra",
-            ].map((key) => (
+            {["transportation", "food", "lodging", "extra"].map((key) => (
               <Col md={6} key={key} className="mb-2">
-                <Form.Label className="text-capitalize">
-                  {key}
-                </Form.Label>
+                <Form.Label className="text-capitalize">{key}</Form.Label>
                 <Form.Control
                   type="number"
                   name={key}

@@ -42,6 +42,7 @@ export default function TripFilters({
             placeholder="e.g., 1000"
           />
         </div>
+        
         {/* State Filter */}
         <div className="col-md-4 mb-2">
           <label>Filter by State</label>
