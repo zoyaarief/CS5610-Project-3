@@ -13,7 +13,7 @@ Instructor: John Alexis Guerra Gomez
 
 [Stewart - My Trips](https://youtu.be/s2tTLCJJgww)
 
-Theresa - 
+[Theresa - User Account/State Pages] (https://youtu.be/2mCPrRhkKbM)
 
 ## 🎯 Project Objective
 
