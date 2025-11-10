@@ -38,7 +38,7 @@ export default function Trip() {
   useEffect(() => {
     async function loadTrips() {
       try {
-        const res = await fetch(`/api/trips?userId=${userId}`);
+        const res = await fetch(`/api/trips?userId=${requestAnimationFrame.userId}`);
         const data = await res.json();
         console.log("Fetched trips:", data); // DEBUG
         setTrips(data);

@@ -35,13 +35,10 @@ export default function Home() {
           <p>Click any state to see highlights and add it to your travel history.</p>
         </div>
         <div className="feature-card">
-          <h3>Trip Builder</h3>
+          <h3>Trip Tracker</h3>
           <p>Plan multi-city routes, dates, budgets, and notes—keep it all organized.</p>
         </div>
-        <div className="feature-card">
-          <h3>Your Journal</h3>
-          <p>Add details and photos to remember the best parts of each trip.</p>
-        </div>
+
       </div>
 
       <div className="home-tip">
