@@ -1,14 +1,19 @@
-# CS5610-Project-3
-🌎 Travel Tracker for the United States
+# 🌎 Travel Tracker for the United States
 
-Authors
+### Authors - Stewart Almeida, Theresa Coleman
 
-Theresa Coleman – User Authentication, Account Management, State Information Pages
 
-Stewart Almeida – Trip Logging, Map Visualization, Dashboard & Stats
+[Course: CS5610 Web Development](https://johnguerra.co/classes/webDevelopment_online_fall_2025/)
 
-Course: CS5610 Web Development
 Instructor: John Alexis Guerra Gomez
+
+[Public Deployment](https://cs5610-project-3-site.onrender.com/)
+
+## 🎞️ Short Video Presentations
+
+[Stewart - My Trips](https://youtu.be/s2tTLCJJgww)
+
+Theresa - 
 
 ## 🎯 Project Objective
 
@@ -29,23 +34,23 @@ Each user can:
 
 ## 🧠 Tech Stack
 
-Frontend	React (Hooks), Vite, HTML5, CSS3
+-- Frontend	React (Hooks), Vite, HTML5, CSS3
 
-Backend	Node.js, Express
+-- Backend	Node.js, Express
 
-Database	MongoDB (using official driver, no Mongoose)
+-- Database	MongoDB (using official driver, no Mongoose)
 
-Libraries	react-simple-maps (for U.S. map), bcryptjs, jsonwebtoken
+-- Libraries	react-simple-maps (for U.S. map), bcryptjs, jsonwebtoken
 
-Development Tools	Prettier (code formatting), ESLint (linting), GitHub, VS Code
+-- Development Tools	Prettier (code formatting), ESLint (linting), GitHub, VS Code
 
 ## 🧑‍🎨 Design Overview
 
 Theresa focused on user account management and authentication, while Stewart focused on trip management and visualization.
 Together, these features create a complete travel-tracking experience.
 
-Key Features
-👤 User Accounts (Theresa)
+### Key Features
+#### 👤 User Accounts (Theresa)
 
 Create account (/register)
 
@@ -57,7 +62,7 @@ Delete account permanently
 
 State info pages with JSON data for all 50 states
 
-🗺️ Trip Dashboard (Stewart)
+#### 🗺️ Trip Dashboard (Stewart)
 
 Add trips with start/end destinations and optional legs
 
@@ -136,7 +141,7 @@ Defaults runs on: http://127.0.0.1:PORT
 
 Make sure both the frontend and auth-server are running simultaneously.
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 
 Create a .env file inside auth-server with:
 ```
@@ -183,9 +188,9 @@ Environment secrets are excluded from source control.
 
 ## 📸 Screenshots
 
-![Img 1](img/p3_1.png)
-![Img 2](img/p3_2.png)
-![Img 3](img/p3_3.png)
+<img src="img/p3_1.PNG" alt="My trips" width="400" />
+<img src="img/p3_2.PNG" alt="States" width="400" />
+<img src="img/p3_3.PNG" alt="Add trip form" width="400" />
 
 ## 🌐 Deployment
 
