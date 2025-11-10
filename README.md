@@ -12,6 +12,7 @@ Instructor: John Alexis Guerra Gomez
 ## 🎞️ Short Video Presentations
 
 [Stewart - My Trips](https://youtu.be/s2tTLCJJgww)
+
 [Theresa - User Account/State Pages](https://youtu.be/2mCPrRhkKbM)
 
 
